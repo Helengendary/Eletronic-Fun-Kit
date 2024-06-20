@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
-import requests
-import json
 import pyodbc
 
+# Conectar com a API
 url = "https://iiot-7276b-default-rtdb.firebaseio.com/Helena.json"
 proxies = {'https' : "http://disrct:etsps2024401@10.224.200.26:8080"}
 
@@ -11,26 +10,66 @@ database = 'helenis'
 cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';Trusted_Connection=yes')
 cursor = cnxn.cursor()
 
+# Funções para pegar as informações da tabela
 def lerTable():
     cursor.execute(f"SELECT * FROM Sensor")
     return cursor.fetchall()
 
 def ler(tipo):
     cursor.execute(f"SELECT {tipo} FROM Sensor")
-    return cursor.fetchall()
+    return [row[0] for row in cursor.fetchall()]
 
 def apresentar(sinal):
     print(f"Temperatura: {sinal['Temperatura']}")
     print(f"Umidade: {sinal['Umidade']}")
 
-data = lerTable()
 
+# Print para saber a quantidade de coisas na tabela
+data = lerTable()
 print(len(data))
 
-plt.scatter(ler('Umidade'), ler('Temperatura'))
-plt.show()
+dfdfan = ler('Umidade')
+gdsgsd = ler('DISTINCT LEFT(CONVERT(VARCHAR, timestamp, 108), 5)')
+jjkjkh = ler('Temperatura')
 
-plt.scatter(ler('timestamp'), ler('Temperatura'))
-plt.show()
+print(dfdfan)
+print(gdsgsd)
+print(jjkjkh)
 
-# help(plt.bar) # informa os comandos existentes
+#----------------------------------------------
+# dfdfan = ler('Umidade')
+# gdsgsd = ler('DISTINCT LEFT(CONVERT(VARCHAR, timestamp, 108), 5)')
+# humanidade = []
+# times = []
+
+
+# for j in dfdfan:
+#     for h in j:
+#         humanidade.append(h)
+
+# for i in range(len(gdsgsd)):
+#     times.append(gdsgsd[i])
+
+# print(times)
+#----------------------------------------------
+
+# Criação do gráfico
+def GraficoPontos(x, y, cor, labele, labex):
+    plt.scatter(x, y, color=cor, label=labele)
+    plt.xlabel(labex)
+    plt.ylabel(labele)
+    plt.legend()
+    plt.grid()
+    plt.show()
+    plt.close()
+
+GraficoPontos(ler('timestamp'), ler('Umidade'), 'red', 'Umidade', 'Horário')
+GraficoPontos(ler('timestamp'), ler('Temperatura'), 'hotpink', 'Temperatura', 'Horário')
+
+width = 0.4
+plt.bar(gdsgsd, dfdfan, label='Umidade', align='edge', width=-width)
+plt.bar(gdsgsd, jjkjkh, color='red', label='Temperatura', align='edge', width=width)
+plt.show()
+plt.close()
+
+# help(plt.scatter) # informa os comandos existentes
