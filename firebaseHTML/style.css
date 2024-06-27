@@ -1,7 +1,7 @@
 :root{
-    --default-color: #fff;
-    --background-color: #12121b;
-    --header-color: #38384d;
+    --default-color: #000000;
+    --background-color: #e0dddd;
+    --header-color: #ff0022;
 }
 * {
     border: 0;
@@ -53,14 +53,13 @@ main {
 .home {
     flex-wrap: wrap;
     gap: .25rem;
-    background-color: rgba(255, 255, 255, 0.418);
-    box-shadow: 0 0 10px white;
+    background-color: rgba(255, 0, 0, 0.418);
+    box-shadow: 0 0 10px red;
     border-radius: 2rem ;
     overflow: hidden;
 
     .place {
         background-color: var(--background-color);
-        border-radius: 15px;
         min-width: 20rem;
         min-height: 20rem;
 
@@ -78,8 +77,8 @@ main {
             }
 
             .light-on {
-                color: yellow;
-                filter: drop-shadow(0 0 10px rgb(245, 255, 106));
+                color: rgb(255 141 0);
+                filter: drop-shadow(0 0 10px rgb(195, 209, 4));
             }
         }
 

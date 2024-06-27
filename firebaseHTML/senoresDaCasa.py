@@ -7,7 +7,7 @@ import utime
 import time
 
 # Configura o pino onde o DHT11 está conectado
-dht_sensor = dht.DHT11(Pin(34))
+dht_sensor = dht.DHT11(Pin(32))
 
 amarelo = Pin(16, Pin.OUT)
 verde = Pin(4, Pin.OUT)
@@ -15,7 +15,7 @@ vermelho = Pin(17, Pin.OUT)
 
 amarelotv = Pin(33, Pin.OUT)
 verdetv = Pin(25, Pin.OUT)
-vermelhotv = Pin(32, Pin.OUT)
+vermelhotv = Pin(27, Pin.OUT)
 
 luzvermelho = Pin(13, Pin.IN)
 luzverde = Pin(15, Pin.IN)
@@ -71,8 +71,14 @@ def receberFire():
     return qualquer
 
 while True:
+    
+    time.sleep(0.5)
+    print("agora")
+    time.sleep(1)
+    
     fireBase = receberFire()
 
+    dht_sensor.measure()
     temp = dht_sensor.temperature()
     hum = dht_sensor.humidity()
     
