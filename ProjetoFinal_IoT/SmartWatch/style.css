@@ -1,0 +1,110 @@
+*{
+    margin: 0;
+    font-family: "Inria Sans", sans-serif;
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+    background-color: #008B9E;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+.principalDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 4%;
+}
+
+.primeiraDiv{
+    width: 60%;
+    height: 100px;
+    background-color: #FFEAB6;
+    margin: 1%;
+    padding: 2%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.primeiraDiv p{
+    font-size: 1.5em;
+    margin-bottom: 1.5%;
+    margin-left: 1.5%;
+}
+
+.primeiraDiv h2{
+    font-size: 5em;
+    margin-left: 3%;
+}
+
+.tempUmid{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 2em;
+    margin-right: 10%;
+}
+
+.tempUmid span{
+    font-size: 1.2em;
+    margin: 2%;
+}
+
+.tempUmid h3{
+    margin-right: 10%;
+}
+.d{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.segundaDiv{
+    width: 60%;
+    height: auto;
+    background-color: #FFEAB6;
+    margin: 1%;
+    padding: 2%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.segundaDiv h2{
+    font-size: 2.5em;
+    margin-left: 3%;
+}
+
+.meio{
+    display: flex;
+    flex-direction: row;
+}
+
+.Divizinha img{
+    width: 45%;
+}
+
+.Divizinha{
+    margin: 2%;
+    background-color: #FFA756;
+    display: flex;
+    border-radius: 20px;
+    align-items: center;
+    flex-direction: column;
+    /* height: 100%; */
+    padding: 5%;
+    box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
+
+.Divizinha h3{
+    font-size: 2.3em;
+    margin-top: 55%;
+}

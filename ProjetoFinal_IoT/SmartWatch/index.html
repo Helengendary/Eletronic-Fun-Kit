@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <!-- Add the Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+
+    <script type="module" src="./script.js"></script>
+    <title>SmartWatch</title>
+</head>
+<nav>
+    <h1>SMARTWATCH</h1>
+</nav>
+<body>
+    <div class="principalDiv">
+        <div class="primeiraDiv">
+            <div class="d">
+                <h2 id="Hora">-</h2>
+                <p id="Data">-</p>
+            </div>
+            <div class="tempUmid">
+                <span class="material-symbols-outlined">sunny</span><h3 id="Temp">-</h3>
+                <span class="material-symbols-outlined">water_drop</span><h3 id="Humid">-</h3>
+            </div>
+        </div>
+        <div class="segundaDiv">
+            <h2>Saúde</h2>
+            <div class="meio">
+                <div class="Divizinha">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5200/5200137.png" alt="Passos">
+                    <h3 id="passo">-</h3>
+                </div>
+                <div class="Divizinha">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1512/1512883.png" alt="Batimento">
+                    <h3 id="bpm">-</h3>
+                </div>
+                <div class="Divizinha">
+                    <img src="https://cdn-icons-png.flaticon.com/512/32/32446.png" alt="Oxigenio">
+                    <h3 id="o2">-</h3>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
