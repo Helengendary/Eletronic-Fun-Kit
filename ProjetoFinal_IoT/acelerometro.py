@@ -7,75 +7,60 @@ import network
 import dht
 import ujson
 import utime
+import mpu6050 as mpu
 
-class accel():
-    def __init__(self, i2c, addr=0x68):
-        self.iic = i2c
-        self.addr = addr
-        self.iic.start()
-        self.iic.writeto(self.addr, bytearray([107, 0]))
-        self.iic.stop()
+diaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
+meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
-    def get_raw_values(self):
-        self.iic.start()
-        a = self.iic.readfrom_mem(self.addr, 0x3B, 14)
-        self.iic.stop()
-        return a
+atual = utime.localtime()
+ano = atual[0]
+mes = meses[atual[1]-1]
+dia = atual[2]
+hora = atual[3]
+min = atual[4]
+weekday = diaSemana[atual[6]]
 
-    def get_ints(self):
-        b = self.get_raw_values()
-        c = []
-        for i in b:
-            c.append(i)
-        return c
+if hora < 10:
+    hora = str(hora)
+    hora = '0' + hora
+    
+if min < 10:
+    min = str(min)
+    min = '0' + min
 
-    def bytes_toint(self, firstbyte, secondbyte):
-        if not firstbyte & 0x80:
-            return firstbyte << 8 | secondbyte
-        return - (((firstbyte ^ 255) << 8) | (secondbyte ^ 255) + 1)
+Data = f"{weekday}, {dia} de {mes}"
+HoraAtual = f"{hora}:{min}"
 
-    def get_values(self):
-        raw_ints = self.get_raw_values()
-        vals = {}
-        vals["AcX"] = self.bytes_toint(raw_ints[0], raw_ints[1])
-        vals["AcY"] = self.bytes_toint(raw_ints[2], raw_ints[3])
-        vals["AcZ"] = self.bytes_toint(raw_ints[4], raw_ints[5])
-        vals["Tmp"] = self.bytes_toint(raw_ints[6], raw_ints[7]) / 340.00 + 36.53
-        return vals
+dht = dht.DHT11(Pin(32))
 
-
-i2c = I2C (scl =Pin(23), sda = Pin(22))
-mpu = accel(i2c)
+i2c = I2C (scl =Pin(22), sda = Pin(21))
+mpu = mpu.accel(i2c)
 
 passo = 0
-xPeak = 15
-xVale = -5
-xPast = 0
-picado = False
-valuedado = False
+xPeak = 20
+xVale = -20
 count = 0    
     
 while True:
     temps = (mpu.get_values())
 
-    x = round(temps["AcX"] * 2 / 500,2) 
-    y = round(temps["AcY"] * 2 / 500,2) 
-    z = round(temps["AcZ"] * 2 / 500,2) 
+    x = round(temps["AcX"] * 2 / 1000,2) 
+    y = round(temps["AcY"] * 2 / 1000,2) 
+    z = round(temps["AcZ"] * 2 / 1000,2) 
     
     print('x: ', x)
     print('y: ', y)
     print('z: ', z)
-    
-    
-    if xPast > xPeak:
-        
-        if x < xVale:
-            passo+=1
-    
-    xPast = x
-#     print("entrou if")
-#     if z < 120 and z > -120:
-#         print('z')
 
+    if z < 10 and z > -10:
+        if x > xPeak or x < xVale:
+            if count != 1:
+                passo+=1
+                count = 1
+        else:
+            count = 0
+    
+
+    xPast = x
     print('passo ',passo)
-    time.sleep(0.2)
+    sleep(0.05)

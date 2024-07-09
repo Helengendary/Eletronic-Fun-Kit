@@ -6,11 +6,11 @@ import array
 I2C_ADDR = 0x57
 
 # Inicializar o I2C usando SoftI2C
-i2c = SoftI2C(scl=Pin(22), sda=Pin(23), freq=100000)
+i2c = SoftI2C(scl=Pin(21), sda=Pin(18), freq=100000)
 
 # Buffer para armazenar os dados
 buffer_size = 100
-ir_buffer = array.array('H', [0]*buffer_size)
+ir_buffer = array.array('H', [0] * buffer_size)
 
 # Funções para ler e escrever nos registradores do sensor
 def read_register(register):
@@ -52,17 +52,17 @@ def moving_average(data, window_size):
     return avg_data
 
 def low_pass_filter(data, alpha=0.60):
-    filtered_data = [0]*len(data)
+    filtered_data = [0] * len(data)
     filtered_data[0] = data[0]
     for i in range(1, len(data)):
-        filtered_data[i] = alpha * filtered_data[i-1] + (1 - alpha) * data[i]
+        filtered_data[i] = alpha * filtered_data[i - 1] + (1 - alpha) * data[i]
     return filtered_data
 
 def detect_peaks(data, threshold, min_distance):
     peaks = []
     last_peak = -min_distance
     for i in range(1, len(data) - 1):
-        if data[i] > threshold and data[i] > data[i-1] and data[i] > data[i+1]:
+        if data[i] > threshold and data[i] > data[i - 1] and data[i] > data[i + 1]:
             if i - last_peak >= min_distance:
                 peaks.append(i)
                 last_peak = i
@@ -72,12 +72,12 @@ def calculate_bpm(ir_buffer, sample_rate):
     filtered_ir = low_pass_filter(ir_buffer)
     avg_ir = moving_average(filtered_ir, 5)  # Aplicar média móvel com janela de 5
     peak_threshold = max(avg_ir) * 0.6  # Ajuste o limiar de pico
-    min_distance = int(1.0 / sample_rate)  # Distância mínima entre picos
+    min_distance = 1.0 / sample_rate  # Distância mínima entre picos
     
     peaks = detect_peaks(avg_ir, peak_threshold, min_distance)
     
     if len(peaks) >= 2:
-        peak_intervals = [peaks[i] - peaks[i-1] for i in range(1, len(peaks))]
+        peak_intervals = [peaks[i] - peaks[i - 1] for i in range(1, len(peaks))]
         avg_peak_interval = sum(peak_intervals) / len(peak_intervals)
         bpm = 60 / (avg_peak_interval * sample_rate)
         return bpm
@@ -97,8 +97,9 @@ bpm_values = []
 while True:
     ir_buffer = []
     for _ in range(buffer_size):
-        ir_buffer.append(read_sensor())
-#         print(read_sensor())
+        ir_value = read_sensor()
+#         print(ir_value)
+        ir_buffer.append(ir_value)
         time.sleep(sample_rate)
     
     bpm = calculate_bpm(ir_buffer, sample_rate)
@@ -110,3 +111,41 @@ while True:
         print("BPM:", avg_bpm)
     else:
         print("Não foi possível detectar os batimentos")
+#
+
+
+# from machine import Pin, I2C
+# import time
+# 
+# # Endereço I2C do MAX30100
+# I2C_ADDR = 0x57
+# 
+# # Inicializar o I2C
+# i2c = I2C(scl=Pin(21), sda=Pin(18), freq=100000)
+# 
+# def read_register(register):
+#     return i2c.readfrom_mem(I2C_ADDR, register, 1)[0]
+# 
+# def write_register(register, value):
+#     i2c.writeto_mem(I2C_ADDR, register, bytearray([value]))
+# 
+# def setup():
+#     # Configurar o modo e inicializar o sensor
+#     write_register(0x06, 0x03)  # Modo SpO2
+#     write_register(0x07, 0x27)  # Configuração do sensor
+#     write_register(0x09, 0x00)  # Tolerância de interrupção
+#     write_register(0x01, 0x03)  # Ativar os LEDs
+# 
+# def read_sensor():
+#     # Ler dados do sensor
+#     red_led = read_register(0x05) << 8 | read_register(0x04)
+#     ir_led = read_register(0x03) << 8 | read_register(0x02)
+#     return red_led, ir_led
+# 
+# # Configurar o sensor
+# setup()
+# 
+# while True:
+#     red, ir = read_sensor()
+#     print("Red LED:", red, "IR LED:", ir)
+#     time.sleep(1)
