@@ -189,6 +189,7 @@ max30100 = MAX30100(i2c)
 
 # Habilitar modo de leitura de dados do sensor
 max30100.enable_spo2()
+maior = False
 
 try:
     while True:
@@ -212,6 +213,14 @@ try:
             spo2 = 100 * (max30100.buffer_red[-1] / max30100.buffer_ir[-1])
         else:
             spo2 = 0
+
+        if spo2 > 99:
+            maior = True
+
+        while maior:
+            spo2 = 40 * (max30100.buffer_red[-1] / max30100.buffer_ir[-1])
+            if spo2 < 100:
+                maior = False
 
         # Imprimir resultados
         print("Batimento Cardíaco (HR): {:.2f} bpm".format(hr))
